@@ -1,0 +1,158 @@
+/*body {
+  padding: 10px;
+  background: steelblue;
+}
+
+.required {
+  color: red;
+}
+
+.form-control, .btn, .panel, .thumbnail, .alert, .modal *, .modal-dialog, .label, .well, .navbar, .badge {
+  border-radius: 0;
+}*/
+
+img.adv {
+  width: 100%;
+  max-width: 140px;
+  max-height: 140px;
+}
+
+#form-input, #card-preview {
+  background: #fff; 
+  border: 5px solid gold;
+}
+
+#card-preview {
+  overflow: hidden;
+  overflow-x: visible;
+}
+
+.adv-inner-wrapper {
+  display: inline;
+  margin: 2px;
+}
+
+#previewImage {
+  display: none;
+}
+
+/*.navbar {
+  background: #fff;
+}
+.icon-bar {
+  background: #323232;
+}*/
+
+/*@media(max-width: 768px) {
+  body {
+    padding: 5px;
+  }
+  .container-fluid {
+    padding: 0 5px;
+  }
+}*/
+
+/* Newly Added */
+#icard-control {
+  /*transform: scale(0.9);*/
+}
+
+#icard-control.edit-mode .icard .icard-sender .icard-sender-image .icard-image-wrapper *,
+#icard-control.edit-mode .icard .icard-sender .icard-sender-info *,
+#icard-control.edit-mode .icard .icard-message .responsive_text,
+#icard-control.edit-mode .icard .icard-message.with-graphics .responsive_text,
+#icard-control.edit-mode .icard .icard-receiver .icard-receiver-image .icard-image-wrapper *,
+#icard-control.edit-mode .icard .icard-receiver .icard-receiver-info *,
+#icard-control.edit-mode .icard .icard-advert .icard-image-wrapper img {
+  cursor: pointer;
+}
+#icard-control.edit-mode .icard .icard-sender .icard-sender-image .icard-image-wrapper *:hover,
+#icard-control.edit-mode .icard .icard-sender .icard-sender-info *:hover,
+#icard-control.edit-mode .icard .icard-message .responsive_text:hover,
+#icard-control.edit-mode .icard .icard-message.with-graphics .responsive_text:hover,
+#icard-control.edit-mode .icard .icard-receiver .icard-receiver-image .icard-image-wrapper *:hover,
+#icard-control.edit-mode .icard .icard-receiver .icard-receiver-info *:hover,
+#icard-control.edit-mode .icard .icard-advert .icard-image-wrapper img:hover {
+  border: 2px dashed #000;
+}
+#icard-control.edit-mode .icard .icard-sender .icard-sender-image .icard-image-wrapper *:focus,
+#icard-control.edit-mode .icard .icard-sender .icard-sender-info *:focus,
+#icard-control.edit-mode .icard .icard-message .responsive_text:focus,
+#icard-control.edit-mode .icard .icard-message.with-graphics .responsive_text:focus,
+#icard-control.edit-mode .icard .icard-receiver .icard-receiver-image .icard-image-wrapper *:focus,
+#icard-control.edit-mode .icard .icard-receiver .icard-receiver-info *:focus,
+#icard-control.edit-mode .icard .icard-advert .icard-image-wrapper img:focus {
+  border: 1px dashed #000;
+}
+
+
+.icard-message.with-graphics {
+  z-index: -1;
+}
+.icard-message.with-graphics .igraphics_link {
+  z-index: 999;
+}
+.icard-message.with-graphics .igraphics_link .igraphics {
+  z-index: 999;
+}
+
+.no-right-margin {
+  margin-right: 0;
+}
+
+.list-group-sm li {
+  padding: 2px 0 6px 0;
+}
+
+
+/* Social Links */
+.share-space {
+    padding: 0;
+    margin: 0;
+}
+ul.social-icons {
+    max-height: 30px;
+}
+ul.social-icons li {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    background-image: url('social-sprites.png');
+    background-repeat: no-repeat;
+    background-position: 0 100px;
+    display: inline-block;
+    margin: 3px 0;
+    padding: 0;
+    border-radius: 0%;
+    overflow: hidden;
+    box-shadow: 2px 2px rgba(25,25,25,0.45);
+}
+ul.social-icons li:hover {
+    opacity: 0.88; cursor: pointer; box-shadow: 2px 2px rgba(0,0,0,1);
+}
+ul.social-icons li.googleplus {
+    background-position: 0 -300px;
+}
+ul.social-icons li.googleplus:hover {
+    background-position: 0 -330px;
+}
+ul.social-icons li.facebook {
+    background-position: 0 -120px;
+}
+ul.social-icons li.facebook:hover {
+    background-position: 0 -150px;
+}
+ul.social-icons li.twitter {
+    background-position: 0 -1140px;
+}
+ul.social-icons li.twitter:hover {
+    background-position: 0 -1170px;
+}
+ul.social-icons > li, ul.social-icons > li > a {
+    width: 30px;
+    height: 30px;
+}
+ul.social-icons > li > a {
+    display: block;
+    text-decoration: none;
+}
