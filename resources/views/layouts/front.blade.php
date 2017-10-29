@@ -94,9 +94,9 @@
         }
     </style>
 </head>
-<body style="background: dimgrey;">
+<body style="background: #f7f7f7;">
     <div id="app">
-        @include('shared.appnav')
+        @include('shared.nav')
 
         <div class="container">
             @include('shared.alerts')

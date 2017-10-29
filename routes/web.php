@@ -14,9 +14,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', 'PublicController@index')->name('welcome');
 
 Auth::routes();
 
