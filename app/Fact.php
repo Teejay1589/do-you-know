@@ -8,7 +8,7 @@ class Fact extends Model
 {
 		protected $table = "facts";
     protected $fillable = [
-        'fact', 'fact_image', 'is_approved', 'created_by',
+        'fact', 'fact_image', 'tags', 'is_approved', 'created_by',
     ];
 
     protected $casts = [
@@ -20,5 +20,10 @@ class Fact extends Model
             return "<label class='label label-success'>YES</label>";
         else
             return "<label class='label label-danger'>NO</label>";
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'created_by');
     }
 }

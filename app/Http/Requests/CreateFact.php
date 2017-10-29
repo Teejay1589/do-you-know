@@ -27,6 +27,7 @@ class CreateFact extends FormRequest
         return [
             'fact' => 'required|string|min:4',
             'fact_image' => 'nullable|file|image|size:2048',
+            'tags' => 'nullable|array|max:10',
             'is_approved' => 'nullable|min:2|max:3',
             // 'created_by' => Auth::user()->id,
         ];

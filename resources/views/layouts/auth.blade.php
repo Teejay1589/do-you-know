@@ -35,6 +35,63 @@
       #sidebar .list-group-item {
         border: none;
       }
+      select.form-control {
+         width: 100%;
+      }
+      .nav-btn:hover {
+				background: transparent;
+      }
+
+      #login-dp {
+		    min-width: 250px;
+		    padding: 14px 14px 0;
+		    overflow:hidden;
+		    background-color:rgba(255,255,255,1);
+		}
+		#login-dp .help-block {
+		    font-size:12px    
+		}
+		#login-dp .bottom {
+		    background-color:rgba(255,255,255,1);
+		    border-top:1px solid #ddd;
+		    clear:both;
+		    padding:14px;
+		}
+		#login-dp .social-buttons {
+		    margin:12px 0    
+		}
+		#login-dp .social-buttons a {
+		    width: 49%;
+		}
+		#login-dp .form-group {
+		    margin-bottom: 10px;
+		}
+		.btn-fb {
+		    color: #fff;
+		    background-color:#3b5998;
+		}
+		.btn-fb:hover {
+		    color: #fff;
+		    background-color:#496ebc 
+		}
+		.btn-tw {
+		    color: #fff;
+		    background-color:#55acee;
+		}
+		.btn-tw:hover {
+		    color: #fff;
+		    background-color:#59b5fa;
+		}
+		@media(max-width:768px) {
+		    #login-dp {
+		        /*background-color: inherit;*/
+		        /*color: #fff;*/
+		    }
+		    #login-dp .bottom {
+		        /*background-color: inherit;*/
+		        border-top:0 none;
+		    }
+		}
     </style>
 </head>
 <body style="background: #f7f7f7;">
@@ -62,17 +119,74 @@
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                  @if( View::getSection('title') == "Dashboard" )
-                    <li class="active"><a href="{{ route('welcome') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                  @else
-                    <li><a href="{{ route('welcome') }}"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
-                  @endif
+                <ul class="nav navbar-nav navbar-left">
+					@if( View::getSection('title') == "Dashboard" )
+	                    <li class="active"><a href="{{ route('welcome') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+	                @else
+	                    <li><a href="{{ route('welcome') }}"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+	                @endif
+	                <li style="margin: auto 15px;">
+		                <form class="navbar-form navbar-left" role="search">
+		                	<div class="form-group">
+						        <input type="text" class="form-control" placeholder="Search">
+						        <button type="submit" class="btn btn-link nav-btn">
+						        	<i class="glyphicon glyphicon-search"></i>
+						        </button>
+		                	</div>
+				      	</form>
+	                </li>
+                </ul>
 
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        {{-- <li><a href="{{ route('login') }}">Login</a></li>
+                        <li><a href="{{ route('register') }}">Register</a></li> --}}
+                        <li class="navbar-text">Already have an account?</li>
+				        <li class="dropdown">
+				          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+							<ul id="login-dp" class="dropdown-menu">
+								<li>
+									 <div class="row">
+										<div class="col-md-12">
+											{{-- <p class="text-center">Login via</p>
+											<div class="social-buttons">
+												<a href="#" class="btn btn-fb"><i class="glyphicon glyphicon-facebook"></i> Facebook</a>
+												<a href="#" class="btn btn-tw"><i class="glyphicon glyphicon-twitter"></i> Twitter</a>
+											</div>
+			                                <p class="text-center">OR</p> --}}
+											 <form class="form" role="form" method="POST" action="{{ route('login') }}" id="login-nav">
+											 	{{ csrf_field() }}
+
+												<div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+													 <label for="username" class="sr-only control-label">Username</label>
+													 <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus placeholder="Username">
+												</div>
+												<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+													 <label for="password" class="sr-only control-label">Password</label>
+													 <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
+												</div>
+												<div class="form-group">
+													<div class="checkbox">
+														 <label>
+														 	<input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+														 </label>
+													</div>
+		                                             <div class="help-block text-right"><a href="{{ route('password.request') }}">Forgot Your Password?</a></div>
+												</div>
+												<div class="form-group">
+													 <button type="submit" class="btn btn-primary btn-block">Login</button>
+												</div>
+											 </form>
+										</div>
+										<div class="bottom text-center">
+											New here? <a href="{{ route('register') }}"><b>Register Now</b></a>
+										</div>
+									 </div>
+								</li>
+							</ul>
+				        </li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -144,14 +258,16 @@
                           <a class="list-group-item" href="{{ url('/fact') }}"><small>View Facts</small></a>
                         </div>
                       @if (Auth::user()->role_id == 3)
-                        @if( View::getSection('title') == "Manage Users" )
-                          <a class="list-group-item active" data-toggle="collapse" data-parent="#sidebar" href="#m7">&plus; Manage Users <span class="badge">{{ count($users) }}</span></a>
+                        @if( View::getSection('title') == "Manage System" )
+                          <a class="list-group-item active" data-toggle="collapse" data-parent="#sidebar" href="#m7">&plus; Manage System</a>
                           <div id="m7" class="collapse in">
                         @else
-                          <a class="list-group-item" data-toggle="collapse" data-parent="#sidebar" href="#m7">&plus; Manage Users <span class="badge">{{ count($users) }}</span></a>
+                          <a class="list-group-item" data-toggle="collapse" data-parent="#sidebar" href="#m7">&plus; Manage System</a>
                           <div id="m7" class="collapse">
                         @endif
-                            <a class="list-group-item" href="{{ url('/user') }}"><small>View Users</small></a>
+                            <a class="list-group-item" href="{{ url('/facts') }}"><small>Facts</small> <span class="badge">{{ count($facts) }}</span></a>
+                            <a class="list-group-item" href="{{ url('/tags') }}"><small>Tags</small> <span class="badge">{{ count($tags) }}</span></a>
+                            <a class="list-group-item" href="{{ url('/users') }}"><small>Users</small> <span class="badge">{{ count($users) }}</span></a>
                           </div>
                       @endif
   			            </div>
@@ -163,19 +279,21 @@
         {{-- <div id="content" class="col-lg-9 col-md-9 col-sm-8 "> --}}
         {{-- <div id="content" class="col-lg-12 col-md-12 col-sm-12"> --}}
         <div class="col-lg-9 col-md-9 col-sm-8">
-        	<div class="container-fluid">
-	    		   <div class="clearfix"><br></div>
-              <div class="row">
-	     		      @include('shared.alerts')
+    		<div class="container-fluid">
+    		   	<div class="clearfix"><br></div>
+          		<div class="row">
+     		      	@include('shared.alerts')
 	          
-	          	  @yield('content')
-             </div>
+	          	  	@yield('content')
+             	</div>
         	</div>
       	</div>
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('asset/js/app.js') }}"></script>
+    {{-- <script src="{{ asset('asset/js/app.js') }}"></script> --}}
+    <script src="{{ asset('asset/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('asset/js/bootstrap.min.js') }}"></script>
     @if( View::hasSection('page_scripts') )
       @yield('page_scripts')
     @endif

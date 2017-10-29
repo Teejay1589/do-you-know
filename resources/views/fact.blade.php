@@ -2,6 +2,13 @@
 
 @section('title', $page->title)
 
+@section('page_styles')
+@if ( isset($page->action) && $page->action != "")
+	{{-- Select2 Plugin CSS --}}
+	<link rel="stylesheet" type="text/css" href="{{ asset('asset/plugin/select2-4.0.3/dist/css/select2.min.css') }}">
+@endif
+@endsection
+
 @section('content')
 <h4>{{ $page->title }}</h4>
 @if ( isset($page->action) && $page->action == "create")
@@ -10,36 +17,7 @@
 		<div class="panel panel-primary">
 		    <div class="panel-heading">Create Fact Form</div>
 		    <div class="panel-body">
-				<form action="{{ route('save_fact') }}" method="POST">
-					<div class="form-group">
-						{{ csrf_field() }}
-					</div>
-					
-					<div class="row">
-						<div class="form-group col-md-9">
-							<label>Fact: <span class="text-danger">*</span></label>
-							<textarea class="form-control" name="fact" rows="5" placeholder="Enter Fact" required>{{ old('fact') }}</textarea>
-						</div>
-
-						<div class="form-group col-md-3 {{ $errors->has('avatar') ? ' has-error' : '' }}"> 
-		            <div id="preview">
-		                <label for="fact_image">Fact Image: </label>
-		                @if ( session()->get('avatar_temp') != null )
-		                <img class="thumbnail img-responsive center-block change_avatar" src="{{ asset(session()->get('avatar_temp')) }}" alt="Avatar" height="150px" width="150px">
-		                @else
-		                <img class="thumbnail img-responsive center-block change_avatar" src="{{ asset('') }}" alt="Fact Image" height="150px" width="150px">
-		                @endif
-		            </div>
-		            <div class="center-block text-center" style="position:abolute; margin: -50px auto 20px auto; z-index: 9;">
-		                <a class="change_avatar btn btn-xs btn-primary btn-cta">Add</a>
-		            </div>
-		        </div>
-					</div>
-
-					<div class="text-right">
-						<button type="submit" class="btn btn-primary">Create</button>
-					</div>
-				</form>
+				@include('forms.create_fact')
 		    </div>
 		</div>
 	</div>
@@ -50,31 +28,7 @@
 		<div class="panel panel-primary">
 		    <div class="panel-heading">Update Fact Form</div>
 		    <div class="panel-body">
-				<form action="{{ route('update_fact', ['id' => $active_object->id]) }}" method="POST">
-					<div class="form-group">
-						{{ csrf_field() }}
-					</div>
-					
-					<div class="form-group">
-						<label>Fact: <span class="text-danger">*</span></label>
-						<textarea class="form-control" name="fact" rows="3" placeholder="Enter Fact" required>{{ old('fact', $active_object->fact) }}</textarea>
-					</div>
-					
-					@if (Auth::user()->role_id == 3)
-						<div class="form-group">
-	              <div class="checkbox">
-	                  <label>
-	                  	<input type="checkbox" name="is_approved" {{ old('is_approved', $active_object->is_approved) ? 'checked' : '' }}> Is Approved
-	                  </label>
-	              	<span class="help-block">Check to approve FACT</span>
-	              </div>
-	          </div>
-					@endif
-
-					<div class="text-right">
-						<button type="submit" class="btn btn-primary">Save</button>
-					</div>
-				</form>
+				@include('forms.update_fact')
 		    </div>
 		</div>
 	</div>
@@ -89,8 +43,10 @@
 					<table class="table table-condensed table-hover">
 						<thead>
 							<tr>
-								<th>#</th>
+								<th style="width: 10px;">#</th>
 								<th>Fact</th>
+								<th>Fact Image</th>
+								<th>Fact Tags</th>
 								<th>Is Approved</th>
 								<th>Actions</th>
 							</tr>
@@ -99,7 +55,20 @@
 							@forelse (Auth::user()->facts as $obj)
 							<tr>
 								<td>{{ $loop->iteration }}</td>
-								<td>{{ str_limit($obj->fact, 100) }}</td>
+								<td>{{ str_limit($obj->fact, 132) }}</td>
+								<td>
+									<img src="{{ asset($obj->fact_image) }}" alt="" style="max-height: 50px;">
+								</td>
+								<td>
+									@php
+										$obj->tags = json_decode($obj->tags);
+									@endphp
+									@isset ($obj->tags)
+										@foreach ($obj->tags as $element)
+											<span class="label label-primary">{{ $element }}</span> 
+										@endforeach
+									@endisset
+								</td>
 								<td>{!! $obj->booleanLabel($obj->is_approved) !!}</td>
 								<td>
 									<a href="{{ url('/fact/update/'.$obj->id) }}" title="update">upd</a>
@@ -121,4 +90,55 @@
 </div>
 @endif
 <br><br><br>
+@endsection
+
+@section('page_scripts')
+<!-- AJAX Pic Upload - fact_image -->
+<form id="fact_image" name="fact_image" method="POST" enctype="multipart/form-data" class="center-block text-center" style="opacity: 0; position:absolute; margin-top:-50px; z-index: -1;">
+    {{ csrf_field() }}
+    <input type="file" name="fact_image_temp" class="form-control input-sm" accept="image/gif, image/jpeg, image/png" onchange="$('#fact_image').submit(); this.value='';" form="fact_image" hidden>
+</form>
+<script type='text/javascript'>
+    $('.change_fact_image').click(function(e) {
+        e.preventDefault();
+        $('input[name="fact_image_temp"]').click();
+    });
+
+    $("#fact_image").on('submit',(function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "{{ url('/upload-fact_image') }}",
+        type: 'POST',
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        success: function(data) {
+            // alert(data);
+            if(data=='invalid file') {
+             // invalid file format.
+            } else {
+             // view uploaded file.
+             // $('#preview').html(data);
+             $('img.change_fact_image').attr('src', data);
+             $('#fact_image')[0].reset();
+            }
+          }         
+        });
+     }));
+</script>
+<!-- /AJAX Pic Upload -->
+
+@if ( isset($page->action) && $page->action != "")
+	{{-- Select2 Plugin JS --}}
+	<script src="{{ asset('asset/plugin/select2-4.0.3/dist/js/select2.min.js') }}"></script>
+	<script type="text/javascript">
+	    $('#tags').select2({
+	        tags: true,
+	        placeholder: "Select fact tags",
+	        allowClear: true,
+	        maximumSelectionLength: 10
+	    });
+	</script>
+@endif
 @endsection

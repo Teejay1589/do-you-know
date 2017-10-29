@@ -20,11 +20,20 @@
     {{-- <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css"> --}}
 
     <style type="text/css">
-          /*html, body {
+        /*html, body {
               font-family: 'Raleway', sans-serif;
           }*/
-        * {
+          * {
             border-radius: 0 !important;
+          }
+          .table-wrapper {
+            overflow-x: scroll;
+          }
+          textarea {
+            resize: vertical;
+          }
+          select.form-control {
+             width: 100%;
           }
     </style>
 </head>
@@ -97,6 +106,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('asset/js/app.js') }}"></script>
+    {{-- <script src="{{ asset('asset/js/app.js') }}"></script> --}}
+    <script src="{{ asset('asset/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('asset/js/bootstrap.min.js') }}"></script>
 </body>
 </html>

@@ -7,9 +7,10 @@ use App\Http\Requests\UpdateUserProfile;
 use App\Http\Requests\ChangeUserPassword;
 use Illuminate\Support\Facades\Auth;
 use App\Fact;
-use App\Config;
+use App\FactTag;
 use App\Page;
 use App\Role;
+use App\Tag;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Redirect;
@@ -28,15 +29,20 @@ class AuthController extends Controller
         $page = new Page();
         $page->setLayout("auth")->setTitle("Update Profile")->setAction("");
         $facts = Fact::all();
+        $fact_tags = FactTag::all();
         $roles = Role::all();
+        $tags = Tag::all();
         $users = User::all();
         
-        Auth::user()->facts = Fact::where('created_by', Auth::user()->id)->get();
+        // Auth::user()->facts = Fact::where('created_by', Auth::user()->id)->get();
+        Auth::user()->facts = Auth::user()->facts()->get();
 
         return view('profile')
             ->with('page', $page)
             ->with('facts', $facts)
+            ->with('fact_tags', $fact_tags)
             ->with('roles', $roles)
+            ->with('tags', $tags)
             ->with('users', $users);
     }
 
@@ -46,7 +52,7 @@ class AuthController extends Controller
             $request['avatar'] = session()->get('avatar_temp');
             session()->forget('avatar_temp');
         }
-        if(Auth::user()->role_id == 9) {
+        if(Auth::user()->role_id == 3) {
             $request['role_id'] = $request->role;
         } else {
             $request['role_id'] = Auth::user()->role_id;

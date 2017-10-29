@@ -10,7 +10,6 @@ class Page
     public $layout = "";
     public $title = "Do You Know?";
     public $action = "";
-    
 
     /**
      * @return mixed

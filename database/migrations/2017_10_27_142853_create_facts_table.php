@@ -17,6 +17,7 @@ class CreateFactsTable extends Migration
             $table->increments('id');
             $table->text('fact');
             $table->string('fact_image')->nullable();
+            $table->text('tags')->nullable();
             $table->tinyInteger('is_approved')->default(0);
             $table->unsignedInteger('created_by')->default(1)->index();
             $table->timestamps();
