@@ -71,7 +71,7 @@
 								<th>Fact Image</th>
 								<th>Fact Tags</th>
 								<th>Is Approved</th>
-								{{-- <th>Actions</th> --}}
+								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
